@@ -18,12 +18,12 @@ async function fBorrarDatos(req,res){
         const db = client.db(database);
         const coll = db.collection(coleccion);
         console.log('tipo id: ', typeof id)
-        /* const dato = {
+        const dato = {
             _id: parseInt(id)
         }
 
         const result = await coll.deleteOne(dato);
-        console.log('Resuldato de borrado de dato',result) */
+        console.log('Resuldato de borrado de dato',result) 
         
         let datosACliente = {
             mensaxe: "chega a fBorrarDatos"
