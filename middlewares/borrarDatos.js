@@ -24,6 +24,8 @@ async function fBorrarDatos(req,res){
 
         const result = await coll.deleteOne(dato);
         console.log('Resuldato de borrado de dato',result) */
+
+        // solo un comentario añadido aquí
         
         let datosACliente = {
             mensaxe: "chega a fBorrarDatos"
