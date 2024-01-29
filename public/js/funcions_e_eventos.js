@@ -1,7 +1,11 @@
 import { eventosEGB } from "./helpers.js";
 
 function preparandoDatos(datos) {
+  // no map recorremos todos los datos que llegan de la base de datos
     datos.documentos.map((documento) => {
+
+      console.log('documento: ', documento)
+
     let _div = document.createElement("div");
     _div.setAttribute("id",`${documento._id}`);
     document.querySelector(".lista").append(_div);
@@ -13,7 +17,7 @@ function preparandoDatos(datos) {
 
     for (let contador = 0; contador < tamanhio; contador++) {
       let _span2 = document.createElement("span");
-
+      _span2= document.createElement('span');
       if (Array.isArray(elementos[contador])) {
         // bucle sobre o array
         for (let contador2 = 0; contador2 < elementos[contador].length; contador2++) {
