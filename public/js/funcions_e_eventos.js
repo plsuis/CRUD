@@ -56,22 +56,49 @@ function preparandoDatos(datos) {
 
     //document.querySelector(".")
     
-});
+});//datos.documentos.map
 
       let _divInterno = document.querySelector("div");
 
       _divInterno.addEventListener('click', () => {
 
-        let refTodosEditar = document.querySelectorAll('.editar');
-        let refTodosGardar = document.querySelectorAll('.guardar');
+        /*let refTodosEditar = document.querySelectorAll('.editar');
+        let refTodosGardar = document.querySelectorAll('.guardar');*/
         let refTodosBorrar = document.querySelectorAll('.borrar');
         
-        eventosEGB(refTodosEditar);
-        eventosEGB(refTodosGardar);
+        /*eventosEGB(refTodosEditar);
+        eventosEGB(refTodosGardar);*/
         eventosEGB(refTodosBorrar);
 
-      })//_div interno
-}
+      })//addEventListener _div interno
+
+      let _inputs = document.querySelectorAll('input')
+      
+      let nomes = []
+      for(let _input of _inputs){
+        _input.addEventListener("click",(e)=>{
+         
+          e.target.removeAttribute("readonly")
+          nomes[0] = e.target.parentElement.getAttribute("id")
+          nomes.push(e.target.getAttribute("name"))
+          e.target.style.backgroundColor = "blue";
+          e.target.style.color = "white";
+        })
+      }
+    
+      let _imxsGuardar = document.querySelectorAll('.guardar')
+      for(let contador = 0; contador < _imxsGuardar.length; contador ++){
+        _imxsGuardar[contador].addEventListener("click",(e)=>{
+          
+          let idPulsado = e.target.parentElement.getAttribute('id')
+          if(idPulsado == nomes[0]){
+            console.log('estou dentro da coincidencia ',nomes);
+            console.log('idPulsado ',idPulsado,nomes[0])
+          }
+        })
+      }
+
+}//preparandoDatos(datos)
 
 /* document.querySelectorAll[0].addEventListener("click",(e) => {
     console.log("hola", e.target)
