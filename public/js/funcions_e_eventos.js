@@ -21,10 +21,12 @@ function preparandoDatos(datos) {
     let _span = document.createElement("span");
     //para comprobar, sacamos o documento por consola:
     //console.log('documento: ',documento._id,documento);
+    // Aqui sacamos los documentos de la BBDD mongo
     let tamanhio = Object.keys(documento).length;
     let elementos = Object.values(documento);
       console.log('elementos: ',elementos)
       console.log('As claves do obxeto documento: ',Object.keys(documento))
+      // Bucle para pintar los documentos sacados de mongo con anterioridad
     for (let contador = 0; contador < tamanhio; contador++) {
       let _span2 = document.createElement("span");
       //_span2:setAttribute("name",)

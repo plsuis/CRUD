@@ -3,3 +3,14 @@ img {
     height: 15px;
     cursor: pointer;
 }
+
+button:hover {
+    transition: all .1s linear;
+    transform: scale(1.2); 
+}
+
+img:hover{
+    transition: all .1s linear;
+    transform: scale(1.2); 
+    cursor: pointer;
+}
