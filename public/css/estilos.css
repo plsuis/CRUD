@@ -47,4 +47,8 @@ button {
 
 .lista img:hover {
     transform: scale(1.3);
+    cursor: pointer;
+}
+input:hover,button{
+    cursor: pointer;
 }
