@@ -1,18 +1,18 @@
 import { _servindoOServer } from "./comunicacion/with_server.js";
-function seleccionTarefaARealizar(id,tarefaArealizar){
+function seleccionTarefaARealizar(id,tarefaArealizar,datos){
     let metodo = "";
     let endpoint = "";
-    /* if(tarefaArealizar === 'guardar'){
-        metodo = "PUT";
-        //endpoint 
-    } */
+    
     if(tarefaArealizar === 'borrar'){
         
         metodo = 'DELETE';
         endpoint = 'borradodatos'
     }
-   
-    _servindoOServer(id,metodo,endpoint)
+    if(tarefaArealizar === 'actualizar'){
+        metodo = 'PUT'
+        endpoint = 'modificadodatos'
+    }
+    _servindoOServer(id,metodo,endpoint,datos)
 }
 
 
@@ -24,11 +24,12 @@ function eventosEGB(refLista){
         let tarefaArealizar = e.target.getAttribute('class');
                 
         e.stopImmediatePropagation()
-        seleccionTarefaARealizar(id,tarefaArealizar)
+        seleccionTarefaARealizar(id,tarefaArealizar,null)
         })
     }
 }
 
 export{
-    eventosEGB
+    eventosEGB,
+    seleccionTarefaARealizar
 }

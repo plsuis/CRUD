@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
@@ -8,7 +9,8 @@ const fileUpload = require("express-fileupload");
 
 const { 
   fLerDatos,
-  fBorrarDatos } = require("./middlewares/index.js");
+  fBorrarDatos,
+  fActualizarDatos } = require("./middlewares/index.js");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -26,10 +28,11 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/lecturadatos",fLerDatos)
 //app.get("/borradodatos/:id",fBorrarDatos) // OK era o tema de parseInt
 app.delete("/borradodatos/:id",fBorrarDatos)
+
 //app.get("/borradodatos",fBorrarDatos)
 //app.delete("/borradodatos",fBorrarDatos)
 
-//app.put("/modificadodatos",fEditarDatos)
+app.put("/modificadodatos",fActualizarDatos)
 
 //INICIAR SERVIDOR
 app.listen(4000, function() {
