@@ -51,7 +51,15 @@ function preparandoDatos(datos) {
       imx.setAttribute("src", `./assets/${imaxenes}.png`);
       imx.setAttribute("class", `${imaxenes}`);
       _div.append(imx);
+
+      /* if (imx.class === 'editar') {
+        imx.addEventListener('click', () => {
+          console.log('hola')
+        })
+      } */
     }
+
+    
 
 
     //document.querySelector(".")
@@ -139,6 +147,20 @@ function preparandoDatos(datos) {
           }
         })
       }//for clave na preparación do dato para gardar o elemento de maneira individual
+
+      let _imxsEditar = document.querySelectorAll('.editar')
+      console.log(_imxsEditar);
+
+      for (let image of _imxsEditar) {
+        image.addEventListener('click', (event) => {
+          for (let input of _inputs) {
+            input.removeAttribute('readonly');
+            input.style.backgroundColor = 'rgb(120, 120, 120)';
+            input.style.color = 'white';
+          }
+          // console.log(_inputs)
+        })
+      }
 
      
 
