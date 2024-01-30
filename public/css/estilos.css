@@ -1,14 +1,25 @@
+:root {
+--color-fondo-div-impares: #e094b540;
+--color-fondo-div-pares: #95959550;
+--lista-div-hover: #ffff0050;
+--color-borde-boton: #e094b570;
+--color-borde-seccion:  #95959550;
+--color-borde-input: #d5d5d5;
+--grosor-bordes: 1px;
+--contorno-bordes: solid;
+}
+
 section {
     width: 90%;
     margin: auto;
     border-radius: 5px;
-    outline: 1px solid #e094b550;
+    outline: var(--grosor-bordes) var(--contorno-bordes) var(--color-borde-seccion);
 }
 button {
     width: 100px; 
     height: 20px;
     border-radius: 5px; 
-    border: 1px solid #e094b570;    
+    border: var(--grosor-bordes) var(--contorno-bordes) var(--color-borde-boton);    
     margin: 5px 0 10px 67px;
 }
 
@@ -16,12 +27,23 @@ button {
     margin-top: 20px; 
 }
 
-.lista > div:nth-child(odd){
-    background-color: #e094b540;
+.lista > div:nth-child(odd) {
+    background-color: var(--color-fondo-div-impares);
 }
 
-.lista > div:nth-child(even){
-    background-color: #95959550;
+.lista > div:nth-child(even) {
+    background-color: var(--color-fondo-div-pares);
+}
+
+input {
+    border: var(--grosor-bordes) var(--contorno-bordes) var(--color-borde-input);
+    border-radius: 5px;
+    margin: 5px;
+    padding: 3px;   
+}
+
+input:focus {
+    outline: var(--grosor-bordes) var(--contorno-bordes) var(--color-borde-input);
 }
 
 .lista span {
@@ -33,7 +55,7 @@ button {
 }
 
 .lista div:hover {
-    background-color: #ffff0050;
+    background-color: var(--lista-div-hover);
     font-weight: bolder;
 }
 
@@ -49,6 +71,6 @@ button {
     transform: scale(1.3);
     cursor: pointer;
 }
-input:hover,button{
+input:hover, button{
     cursor: pointer;
 }
