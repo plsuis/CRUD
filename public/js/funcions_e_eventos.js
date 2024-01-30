@@ -87,6 +87,10 @@ function preparandoDatos(datos) {
       }
     
       let _imxsGuardar = document.querySelectorAll('.guardar')
+      let dato = {
+        id:0,
+        campos: {}
+      }
       for(let contador = 0; contador < _imxsGuardar.length; contador ++){
         _imxsGuardar[contador].addEventListener("click",(e)=>{
           
