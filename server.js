@@ -26,10 +26,18 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/lecturadatos",fLerDatos)
 //app.get("/borradodatos/:id",fBorrarDatos) // OK era o tema de parseInt
 app.delete("/borradodatos/:id",fBorrarDatos)
+
 //app.get("/borradodatos",fBorrarDatos)
 //app.delete("/borradodatos",fBorrarDatos)
 
-//app.put("/modificadodatos",fEditarDatos)
+app.put("/modificadodatos",(req,res)=>{
+  console.log('datos en modificadodatos: ',req.body)
+  let resposta = {
+    mensaxe: "chegan os datos"
+  }
+
+  res.send(resposta)
+})
 
 //INICIAR SERVIDOR
 app.listen(4000, function() {

@@ -1,5 +1,5 @@
 import { _servindoOServer } from "./comunicacion/with_server.js";
-function seleccionTarefaARealizar(id,tarefaArealizar){
+function seleccionTarefaARealizar(id,tarefaArealizar,datos){
     let metodo = "";
     let endpoint = "";
     /* if(tarefaArealizar === 'guardar'){
@@ -11,8 +11,11 @@ function seleccionTarefaARealizar(id,tarefaArealizar){
         metodo = 'DELETE';
         endpoint = 'borradodatos'
     }
-   
-    _servindoOServer(id,metodo,endpoint)
+    if(tarefaArealizar === 'actualizar'){
+        metodo = "PUT";
+        endpoint = "modificadodatos";
+    }
+    _servindoOServer(id,metodo,endpoint,datos)
 }
 
 
@@ -30,5 +33,6 @@ function eventosEGB(refLista){
 }
 
 export{
-    eventosEGB
+    eventosEGB,
+    seleccionTarefaARealizar
 }

@@ -1,9 +1,23 @@
-const _servindoOServer = async (id,metodo,endpoint)=>{
+const _servindoOServer = async (id,metodo,endpoint,datos)=>{
+    let resposta;
 
-    let resposta = await fetch (`/${endpoint}/${id}`,{method:metodo})
+    console.log('metodo,endpoint,datos ',metodo,endpoint,datos)
+
+    if(datos != null){
+
+        resposta = await fetch (`/${endpoint}`,{method:metodo
+            ,
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body:JSON.stringify(datos)
+            })
+    }else{
+        resposta = await fetch (`/${endpoint}/${id}`,{method:metodo})
+    }
     let datosConvertidos = await resposta.json();
 
-    console.log('datos convertidos ', datosConvertidos)
+    console.log('resposta recibida ', datosConvertidos) 
 
 }
 
