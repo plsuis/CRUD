@@ -2,18 +2,15 @@ import { _servindoOServer } from "./comunicacion/with_server.js";
 function seleccionTarefaARealizar(id,tarefaArealizar,datos){
     let metodo = "";
     let endpoint = "";
-    /* if(tarefaArealizar === 'guardar'){
-        metodo = "PUT";
-        //endpoint 
-    } */
+    
     if(tarefaArealizar === 'borrar'){
         
         metodo = 'DELETE';
         endpoint = 'borradodatos'
     }
     if(tarefaArealizar === 'actualizar'){
-        metodo = "PUT";
-        endpoint = "modificadodatos";
+        metodo = 'PUT'
+        endpoint = 'modificadodatos'
     }
     _servindoOServer(id,metodo,endpoint,datos)
 }
@@ -27,7 +24,7 @@ function eventosEGB(refLista){
         let tarefaArealizar = e.target.getAttribute('class');
                 
         e.stopImmediatePropagation()
-        seleccionTarefaARealizar(id,tarefaArealizar)
+        seleccionTarefaARealizar(id,tarefaArealizar,null)
         })
     }
 }

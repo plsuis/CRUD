@@ -119,11 +119,10 @@ function preparandoDatos(datos) {
                   let atributoModificado = nomes[contadorNomes];
                 /*console.log('nomes[contadorNomes]: ',nomes[contadorNomes])  */
                 if(atributoName == atributoModificado){
-
-                  /* console.log('atributoName ',atributoName)
+                   console.log('atributoName ',atributoName)
                   console.log('atributoModificado ',atributoModificado)
-                  console.log('idPulsado: ',idPulsado) */
-                  console.log('_inputArray[contador].value ',_inputArray[contador]) 
+                  console.log('idPulsado: ',idPulsado)
+                  console.log('_inputArray[contador].value ',_inputArray[contador].value) 
                   //dato[`${atributoName}`] = _inputArray[contador].value;
                   dato.campos[`${atributoName}`] = _inputArray[contador].value;
                   dato.id = idPulsado
