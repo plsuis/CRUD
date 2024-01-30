@@ -1,10 +1,10 @@
-import { eventosEGB } from "./helpers.js";
+import { eventosEGB,seleccionTarefaARealizar } from "./helpers.js";
 
 function preparandoDatos(datos) {
   //No map de datos.documentos.map ==> recorremos todos os datos que nos chegan da BBDD
     datos.documentos.map((documento) => {
 
-      console.log("documento: ",documento)
+      //console.log("documento: ",documento)
 
     let _div = document.createElement("div");
     _div.setAttribute("id",`${documento._id}`);
@@ -16,8 +16,8 @@ function preparandoDatos(datos) {
     //console.log('documento: ',documento._id,documento);
     let tamanhio = Object.keys(documento).length;
     let elementos = Object.values(documento);
-    console.log('elmentos: ',elementos)
-    console.log('As claves do obxeto documento: ',Object.keys(documento))
+    /* console.log('elmentos: ',elementos)
+    console.log('As claves do obxeto documento: ',Object.keys(documento)) */
     let claves = Object.keys(documento) // Claves para o introducir o atributo 'name'= valor
 
     //Este for realiza o recorrido dos valores da bbdd
@@ -87,16 +87,60 @@ function preparandoDatos(datos) {
       }
     
       let _imxsGuardar = document.querySelectorAll('.guardar')
+      let dato = {
+        id:0,
+        campos:{}
+      }// inicializo dato
+      
+      /**
+       * for clave na preparación do dato para gardar o elemento de maneira individual
+       * utiliza as variables dato e _imxGuardar.
+       * 
+       * No seu interior xenera o evento click, da imaxe 'guardar'
+       */
       for(let contador = 0; contador < _imxsGuardar.length; contador ++){
         _imxsGuardar[contador].addEventListener("click",(e)=>{
           
           let idPulsado = e.target.parentElement.getAttribute('id')
           if(idPulsado == nomes[0]){
-            console.log('estou dentro da coincidencia ',nomes);
-            console.log('idPulsado ',idPulsado,nomes[0])
+            
+            let _inputArray = e.target.parentElement.querySelectorAll('input');//contén os campos dos elementos input do div clicado
+            let tamanaioDiv = e.target.parentElement.querySelectorAll('input').length;
+            let contador = 0;
+            let tamanioNomes = nomes.length;
+            
+            for(contador;contador < tamanaioDiv; contador++){
+              let contadorNomes = 1;
+              /* console.log('nomes: ',nomes[contador],'contador fora: ',contador) */
+
+              for(contadorNomes; contadorNomes < tamanioNomes ;contadorNomes++){
+               
+                  let atributoName = _inputArray[contador].getAttribute(`name`);
+                  let atributoModificado = nomes[contadorNomes];
+                /*console.log('nomes[contadorNomes]: ',nomes[contadorNomes])  */
+                if(atributoName == atributoModificado){
+                   console.log('atributoName ',atributoName)
+                  console.log('atributoModificado ',atributoModificado)
+                  console.log('idPulsado: ',idPulsado)
+                  console.log('_inputArray[contador].value ',_inputArray[contador].value) 
+                  //dato[`${atributoName}`] = _inputArray[contador].value;
+                  dato.campos[`${atributoName}`] = _inputArray[contador].value;
+                  dato.id = idPulsado
+                }
+              }
+             
+
+            }
+            
+
+            console.log('dato: ',dato)
+            //Agora enviamos o datos o back
+            seleccionTarefaARealizar(dato.id,'actualizar',dato)
           }
         })
-      }
+      }//for clave na preparación do dato para gardar o elemento de maneira individual
+
+     
 
 }//preparandoDatos(datos)
 
