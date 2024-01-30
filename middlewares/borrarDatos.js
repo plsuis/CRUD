@@ -1,3 +1,4 @@
+// middlewares/borrarDatos.js
 require('dotenv').config();
 const { MongoClient } = require("mongodb");
 const url = process.env.URLMONGO;
@@ -5,16 +6,13 @@ const client = new MongoClient(url);
 const database = process.env.BBDD;
 const coleccion = process.env.COLECCION;
 
-//BORRAR DATOS
-
 async function fBorrarDatos(req,res){
     
-        
      try {
         await client.connect();
+
         // BBDD y coleccion van aqui
         const { id } = req.params;
-       
         const db = client.db(database);
         const coll = db.collection(coleccion);
         //console.log('tipo id: ', typeof id)

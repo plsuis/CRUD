@@ -1,0 +1,163 @@
+
+import { eventosEGB } from "./helpers.js";
+/*Función preparandoDatos :
+
+Esta función recibe un objeto datos que presumiblemente contiene información de documentos recuperados de MongoDB.
+Itera sobre los documentos y crea elementos <div> y <span> para cada uno.
+Por cada propiedad en un documento, crea un <span> para mostrar el valor. Si la propiedad es un array, también crea sub-elementos <span> para cada elemento del array.
+Después, crea imágenes <img> para representar las acciones "borrar", "editar" y "guardar" y las agrega al <div>.
+Por último, agrega un evento click al contenedor principal que captura los clics en cualquier parte del contenedor.
+*/
+
+function crearDiv(documento) {
+  const _div = document.createElement("div");
+  _div.setAttribute("id", `${documento._id}`);
+  document.querySelector(".lista").append(_div);
+  return _div;
+}
+
+function crearInputReadOnly(name, value) {
+  const _input = document.createElement("input");
+  _input.setAttribute("readonly", "true");
+  _input.setAttribute("name", name);
+  _input.setAttribute("value", value);
+  return _input;
+}
+
+function agregarArrayInputs(_input, array) {
+  for (let contador2 = 0; contador2 < array.length; contador2++) {
+    const _input3 = document.createElement("input");
+    _input3.setAttribute("readonly", "true");
+    _input3.innerHTML += array[contador2];
+    _input.append(_input3);
+  }
+}
+
+function crearImagen(imagenClass) {
+  const imx = document.createElement("img");
+  imx.setAttribute("src", `./assets/${imagenClass}.png`);
+  imx.setAttribute("class", `${imagenClass}`);
+  return imx;
+}
+
+function agregarEventosBorrar(refTodosBorrar) {
+  refTodosBorrar.forEach((elemento) => {
+    elemento.addEventListener("click", () => {
+      // Lógica para borrar
+      console.log("Borrar:", elemento.parentElement.getAttribute("id"));
+    });
+  });
+}
+//
+
+
+function agregarEventosInputs(botonEditar, nomes) {
+  botonEditar.addEventListener("click", (e) => {
+    // Define "divPadre" coma o ParentElement
+    const divPadre = e.target.parentElement;
+    //Seleccionar todolos inputs do "parentElement"
+    const inputs = divPadre.querySelectorAll("input");
+
+    inputs.forEach((_input) => {
+      _input.removeAttribute("readonly");
+      nomes[0] = _input.parentElement.getAttribute("id");
+      nomes.push(_input.getAttribute("name"));
+      _input.style.backgroundColor = "lightblue";
+    });
+  });
+}
+
+// 
+function agregarEventosGuardar(_imxsGuardar, _inputs, nomes) {
+    _imxsGuardar.forEach((elemento) => {
+      elemento.addEventListener("click", async (e) => {
+        const idPulsado = e.target.parentElement.getAttribute("id");
+        if (idPulsado == nomes[0]) {
+          // Obtener los valores de los inputs
+          const values = [];
+          _inputs.forEach((_input) => {
+            values.push(_input.value);
+          });
+  
+          // Crear un objeto con los valores de los inputs
+          const datosAActualizar = {};
+          nomes.forEach((nombre, index) => {
+            datosAActualizar[nombre] = values[index];
+          });
+  
+          // Hacer la solicitud POST al servidor
+          try {
+            const respuesta = await fetch(`/actualizardatos/${idPulsado}`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                datos: datosAActualizar,
+              }),
+            });
+  
+            if (respuesta.ok) {
+              console.log("Datos actualizados con éxito.");
+              // Puedes hacer algo adicional si la actualización es exitosa
+            } else {
+              console.error("Error al actualizar datos.");
+              // Puedes manejar errores aquí
+            }
+          } catch (error) {
+            console.error("Error de red:", error);
+            // Puedes manejar errores de red aquí
+          }
+        }
+      });
+    });
+  }
+
+function preparandoDatos(datos) {
+  // Recorremos todos los datos que nos llegan de la BBDD
+  datos.documentos.map((documento) => {
+    const _div = crearDiv(documento);
+    const _input = crearInputReadOnly("_id", documento._id);
+    const claves = Object.keys(documento);
+    const elementos = Object.values(documento);
+    prepararInput(claves, elementos, _div);
+    prepararImagenes();
+
+    const botonEditar = _div.querySelector(".editar");
+
+    const tamanhio = Object.keys(documento).length;
+
+        // Codigo de abdul
+        let _imxsEditar = document.querySelectorAll('.editar')
+        console.log(_imxsEditar);
+    
+        for (let image of _imxsEditar) {
+          image.addEventListener('click', (event) => {
+            for (let input of _inputs) {
+              input.removeAttribute('readonly');
+              input.style.backgroundColor = 'rgb(120, 120, 120)';
+              input.style.color = 'white';
+            }
+            // console.log(_inputs)
+          })
+        }
+        // fin do codigo
+
+    for (let contador = 0; contador < tamanhio; contador++) {
+      const _input2 = crearInputReadOnly(claves[contador], elementos[contador]);
+      if (Array.isArray(elementos[contador])) {
+        agregarArrayInputs(_input2, elementos[contador]);
+      }
+      _div.append(_input2);
+    }
+    
+    agregarEventosInputs(botonEditar, nomes);
+  });
+
+  // Mueve estas líneas fuera del bucle para que el evento se aplique al contenedor principal después de agregar todos los documentos
+  const _divInterno = document.querySelector("div");
+  prepararEventoDivInterno();
+  
+}
+
+export { preguntarDatos };

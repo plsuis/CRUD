@@ -22,7 +22,6 @@ function eventosEGB(refLista){
         refElemento.addEventListener('click',(e) => {
         let id = e.target.parentElement.getAttribute('id');
         let tarefaArealizar = e.target.getAttribute('class');
-                
         e.stopImmediatePropagation()
         seleccionTarefaARealizar(id,tarefaArealizar)
         })

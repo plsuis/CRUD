@@ -8,98 +8,186 @@ Después, crea imágenes <img> para representar las acciones "borrar", "editar" 
 Por último, agrega un evento click al contenedor principal que captura los clics en cualquier parte del contenedor.
 */
 
-
-function preparandoDatos(datos) {
-  // datos.documentos.map recorre todos os datos que nos chegan da BBDD
-    datos.documentos.map((documento) => {
-
-      console.log("documento: ", documento)
-
-    let _div = document.createElement("div");
-    _div.setAttribute("id",`${documento._id}`);
-    document.querySelector(".lista").append(_div);
-    let _span = document.createElement("span");
-    //para comprobar, sacamos o documento por consola:
-    //console.log('documento: ',documento._id,documento);
-    // Aqui sacamos los documentos de la BBDD mongo
-    let tamanhio = Object.keys(documento).length;
-    let elementos = Object.values(documento);
-      console.log('elementos: ',elementos)
-      console.log('As claves do obxeto documento: ',Object.keys(documento))
-      // Bucle para pintar los documentos sacados de mongo con anterioridad
-    for (let contador = 0; contador < tamanhio; contador++) {
-      let _span2 = document.createElement("span");
-      //_span2:setAttribute("name",)
-      if (Array.isArray(elementos[contador])) {
-        // bucle sobre o array
-        for (let contador2 = 0; contador2 < elementos[contador].length; contador2++) {
-            let _span3 = document.createElement("span")
-        //   console.log("dentro: ", elementos[contador][contador2]);
-            _span3.innerHTML += elementos[contador][contador2];
-            _span2.append(_span3);
-        }
-      }
-      _span2.innerHTML += elementos[contador];
-    //   console.log('dentro fora: ',_span2)
-      _div.append(_span2);
-    }
-    let imax = ["borrar", "editar", "guardar"];
-    for(let imaxenes of imax) {
-
-      let imx = document.createElement("img");
-      
-      imx.setAttribute("src", `./assets/${imaxenes}.png`);
-      imx.setAttribute("class", `${imaxenes}`);
-      _div.append(imx);
-    }
-    //document.querySelector(".")
-    
-});
-/* Elementos y Eventos:
-
-Cada documento se representa como un <div> que contiene información en elementos <span> y acciones en imágenes <img>.
-Se utilizan imágenes para representar las acciones de "borrar", "editar" y "guardar".
-El código está configurado para capturar clics en cualquier parte del contenedor principal (_divInterno) y manejar eventos según la clase de la imagen clicada (borrar, editar, guardar).
-*/
-
-
-      let _divInterno = document.querySelector("div");
-
-      _divInterno.addEventListener('click', () => {
-
-        let refTodosEditar = document.querySelectorAll('.editar');
-        let refTodosGardar = document.querySelectorAll('.guardar');
-        let refTodosBorrar = document.querySelectorAll('.borrar');
-        
-/* Helper Function eventosEGB:
-
-Se espera que exista una función llamada eventosEGB en el archivo helpers.js. Sin conocer su implementación exacta, parece ser una función para manejar eventos relacionados con "editar", "guardar" y "borrar".
-*/
-        eventosEGB(refTodosEditar);
-        eventosEGB(refTodosGardar);
-        eventosEGB(refTodosBorrar);
-
-      })//_div interno
+function crearDiv(documento) {
+  const _div = document.createElement("div");
+  _div.setAttribute("id", `${documento._id}`);
+  document.querySelector(".lista").append(_div);
+  return _div;
 }
 
-/* document.querySelectorAll[0].addEventListener("click",(e) => {
-    console.log("hola", e.target)
-}) */
+function crearInputReadOnly(name, value) {
+  const _input = document.createElement("input");
+  _input.setAttribute("readonly", "true");
+  _input.setAttribute("name", name);
+  _input.setAttribute("value", value);
+  return _input;
+}
 
-/*preguntarDatos Function:
+function agregarArrayInputs(_input, array) {
+  for (let contador2 = 0; contador2 < array.length; contador2++) {
+    const _input3 = document.createElement("input");
+    _input3.setAttribute("readonly", "true");
+    _input3.innerHTML += array[contador2];
+    _input.append(_input3);
+  }
+}
 
-Hace una solicitud asíncrona al servidor para obtener datos utilizando fetch("/lecturadatos").
-Convierte la respuesta a formato JSON.
-Llama a la función preparandoDatos para procesar los datos recibidos.
-*/
+function crearImagen(imagenClass) {
+  const imx = document.createElement("img");
+  imx.setAttribute("src", `./assets/${imagenClass}.png`);
+  imx.setAttribute("class", `${imagenClass}`);
+  return imx;
+}
+
+function agregarEventosBorrar(refTodosBorrar) {
+  refTodosBorrar.forEach((elemento) => {
+    elemento.addEventListener("click", () => {
+      // Lógica para borrar
+      console.log("Borrar:", elemento.parentElement.getAttribute("id"));
+    });
+  });
+}
+
+function agregarEventosInputs(_inputs, nomes) {
+  _inputs.forEach((_input) => {
+    _input.addEventListener("focus", (e) => {
+      e.target.removeAttribute("readonly");
+      nomes[0] = e.target.parentElement.getAttribute("id");
+      nomes.push(e.target.getAttribute("name"));
+      e.target.style.backgroundColor = "lightblue";
+    });
+
+    _input.addEventListener("blur", (e) => {
+      // Revertir los cambios cuando se pierde el foco
+      e.target.setAttribute("readonly", true);
+      e.target.style.backgroundColor = "";
+    });
+  });
+}
+
+function agregarEventosEditar(_inputs, nomes) {
+  _inputs.forEach((_input) => {
+    _input.addEventListener("focus", (e) => {
+      e.target.removeAttribute("readonly");
+      nomes[0] = e.target.parentElement.getAttribute("id");
+      nomes.push(e.target.getAttribute("name"));
+      e.target.style.backgroundColor = "lightblue";
+    });
+
+    _input.addEventListener("blur", (e) => {
+      // Revertir los cambios cuando se pierde el foco
+      e.target.setAttribute("readonly", true);
+      e.target.style.backgroundColor = "";
+    });
+  });
+}
+
+function agregarEventosGuardar(_imxsGuardar, _inputs, nomes) {
+  _imxsGuardar.forEach((elemento) => {
+    elemento.addEventListener("click", async (e) => {
+      const idPulsado = e.target.parentElement.getAttribute("id");
+      if (idPulsado == nomes[0]) {
+        // Obtener los valores de los inputs
+        const values = [];
+        _inputs.forEach((_input) => {
+          values.push(_input.value);
+        });
+
+        // Crear un objeto con los valores de los inputs
+        const datosAActualizar = {};
+        nomes.forEach((nombre, index) => {
+          datosAActualizar[nombre] = values[index];
+        });
+
+        // Hacer la solicitud POST al servidor
+        try {
+          const respuesta = await fetch(`/actualizardatos/${idPulsado}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              datos: datosAActualizar,
+            }),
+          });
+
+          if (respuesta.ok) {
+            console.log("Datos actualizados con éxito.");
+            // Puedes hacer algo adicional si la actualización es exitosa
+          } else {
+            console.error("Error al actualizar datos.");
+            // Puedes manejar errores aquí
+          }
+        } catch (error) {
+          console.error("Error de red:", error);
+          // Puedes manejar errores de red aquí
+        }
+      }
+    });
+  });
+}
+
+function preparandoDatos(datos) {
+  // Recorremos todos los datos que nos llegan de la BBDD
+  datos.documentos.map((documento) => {
+    const _div = crearDiv(documento);
+    const _input = crearInputReadOnly("_id", documento._id);
+
+    // Este for realiza el recorrido de los valores de la BBDD    
+    const claves = Object.keys(documento);
+    const elementos = Object.values(documento);
+    const tamanhio = Object.keys(documento).length;
 
 
+
+    for (let contador = 0; contador < tamanhio; contador++) {
+      const _input2 = crearInputReadOnly(claves[contador], elementos[contador]);
+      if (Array.isArray(elementos[contador])) {
+        agregarArrayInputs(_input2, elementos[contador]);
+      }
+      _div.append(_input2);
+    }
+
+    const imax = ["borrar", "editar", "guardar"];
+    for (let imaxenes of imax) {
+      const imx = crearImagen(imaxenes);
+      _div.append(imx);
+    }
+
+    const _inputs = document.querySelectorAll("input");
+    const nomes = [];
+
+
+
+    const _divInterno = document.querySelector("div");
+    agregarEventosBorrar(document.querySelectorAll(".borrar"));
+    //agregarEventosInputs(_inputs, nomes);
+    agregarEventosGuardar(document.querySelectorAll(".guardar"), _inputs, nomes);
+    //agregarEventosEditar(document.querySelectorAll(".editar"), _inputs, nomes);
+
+  });
+
+}//preparandoDatos(datos)
+
+// Luego, puedes llamar a la función preguntarDatos como antes:
 async function preguntarDatos() {
-//   console.log("hola");
   let datosLeidos = await fetch("/lecturadatos");
   let datosJson = await datosLeidos.json();
-
   preparandoDatos(datosJson);
+  let _imxsEditar = document.querySelectorAll('.editar')
+  console.log(_imxsEditar);
+  let _inputs = document.querySelectorAll("input");
+  for (let image of _imxsEditar) {
+    image.addEventListener('click', (event) => {
+      for (let input of _inputs) {
+        input.removeAttribute('readonly');
+        input.style.backgroundColor = 'rgb(120, 120, 120)';
+        input.style.color = 'white';
+      }
+      // console.log(_inputs)
+    })
+  }
+
 }
 
 export { preguntarDatos };

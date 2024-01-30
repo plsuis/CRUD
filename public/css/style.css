@@ -2,7 +2,7 @@ img {
     width: 15px;
     height: 15px;
     cursor: pointer;
-}
+    }
 
 button:hover {
     transition: all .1s linear;
