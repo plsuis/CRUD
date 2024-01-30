@@ -13,7 +13,7 @@ async function fActualizarDatos(req,res){
         console.log('req.body: ',req.body)
         await client.connect();
         // BBDD y coleccion van aqui
-        const { id } = req.params;
+        //const { id } = req.params;
        
         const db = client.db(database);
         const coll = db.collection(coleccion);
@@ -30,7 +30,7 @@ async function fActualizarDatos(req,res){
     } finally {
         //asegurar q el cliente cierra cuando acaba/error
         
-
+        await client.close();
   
     } 
 }
