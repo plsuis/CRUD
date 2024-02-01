@@ -1,4 +1,5 @@
-import { eventosEGB } from "./helpers.js";
+//import e from "cors";
+//import { eventosEGB } from "./helpers.js";
 /*Función preparandoDatos :
 
 Esta función recibe un objeto datos que presumiblemente contiene información de documentos recuperados de MongoDB.
@@ -49,23 +50,6 @@ function agregarEventosBorrar(refTodosBorrar) {
 }
 
 function agregarEventosInputs(_inputs, nomes) {
-  _inputs.forEach((_input) => {
-    _input.addEventListener("focus", (e) => {
-      e.target.removeAttribute("readonly");
-      nomes[0] = e.target.parentElement.getAttribute("id");
-      nomes.push(e.target.getAttribute("name"));
-      e.target.style.backgroundColor = "lightblue";
-    });
-
-    _input.addEventListener("blur", (e) => {
-      // Revertir los cambios cuando se pierde el foco
-      e.target.setAttribute("readonly", true);
-      e.target.style.backgroundColor = "";
-    });
-  });
-}
-
-function agregarEventosEditar(_inputs, nomes) {
   _inputs.forEach((_input) => {
     _input.addEventListener("focus", (e) => {
       e.target.removeAttribute("readonly");
@@ -163,7 +147,7 @@ function preparandoDatos(datos) {
     agregarEventosBorrar(document.querySelectorAll(".borrar"));
     //agregarEventosInputs(_inputs, nomes);
     agregarEventosGuardar(document.querySelectorAll(".guardar"), _inputs, nomes);
-    //agregarEventosEditar(document.querySelectorAll(".editar"), _inputs, nomes);
+    agregarEventosEditar(document.querySelectorAll(".editar"));
 
   });
 
@@ -176,17 +160,30 @@ async function preguntarDatos() {
   preparandoDatos(datosJson);
   let _imxsEditar = document.querySelectorAll('.editar')
   console.log(_imxsEditar);
-  let _inputs = document.querySelectorAll("input");
-  for (let image of _imxsEditar) {
-    image.addEventListener('click', (event) => {
-      for (let input of _inputs) {
+
+}
+
+function agregarEventosEditar(_imxsEditar, _inputs) {
+  _imxsEditar.forEach((elemento) => {
+    elemento.addEventListener("click", async (e) => {
+      
+      const inputsTotales = e.target.parentElement.parentElement.querySelectorAll("input");
+      inputsTotales.forEach((input) => {
+        input.setAttribute("readonly", true);
+        input.style.backgroundColor = "";
+        input.style.color = "";
+      })
+
+      const inputsParent = e.target.parentElement.querySelectorAll("input");
+
+      inputsParent.forEach((input) => {
         input.removeAttribute('readonly');
-        input.style.backgroundColor = 'rgb(120, 120, 120)';
-        input.style.color = 'white';
-      }
-      // console.log(_inputs)
-    })
-  }
+        input.style.backgroundColor = "lightgreen";
+        input.style.color = 'red';
+      });
+    });
+
+  });
 
 }
 
