@@ -1,0 +1,5 @@
+Falta la funcionalidad de guardar datos en MongoDB en el boton imx "Guardar" despues de usar la funcion agregarEventosEditar.
+
+Opcional: 
+*Añadir estilos y dejar mas bonito.
+*Quitar boton "Pedir Datos" y hacer la funcion pertinente al cargar la imagen automáticamente.
