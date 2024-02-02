@@ -1,4 +1,4 @@
-import { preguntarDatos } from "./funcions_e_eventos.js";
+import { preguntarDatos } from "./funcions.js";
 
 pedirDatos.addEventListener("click",preguntarDatos);
 
